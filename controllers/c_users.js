@@ -4,14 +4,6 @@ const jwt = require('jsonwebtoken')
 
 module.exports =
 {
-    formLogin: async (req, res) => {
-        res.render('form-login')
-    },
-
-    formRegister: async (req, res) => {
-        res.render('form-register')
-    },
-
     registerUser: async (req, res) => {
         try {
             const { name, email, password, confirmPassword } = req.body
@@ -45,13 +37,13 @@ module.exports =
             const user = await findUserByEmail(email)
 
             if (!user) {
-                return res.status(400).json({message: 'Invalid email or password !'})
+                return res.status(400).json({success: false, message: 'Invalid email or password !'})
             }
 
             const isMatch = await bcrypt.compare(password, user.password)
 
             if (!isMatch) {
-                return res.status(400).json({ message: 'Invalid email or password !'})
+                return res.status(400).json({success: false, message: 'Invalid email or password !'})
             }
 
             //membuat token jwt
@@ -61,11 +53,11 @@ module.exports =
                 {expiresIn: '2h'}
             )
 
-            res.json({ token })
+            res.json({success: true, token})
 
         } catch (error) {
             console.error(error)
-            res.status(500).json({message: 'Login failed, please check your server !'})
+            res.status(500).json({success: false,message: 'Login failed, please check your server !'})
         }
     }
 

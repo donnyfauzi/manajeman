@@ -9,27 +9,23 @@ require("dotenv").config();
 app.use(bodyParser.json())
 app.use(express.static('assets'))
 app.use(express.json())
-
-
-app.set('view engine', 'ejs')
-app.set('views', './views')
+app.use(express.urlencoded({ extended: true }))
 
 const r_users = require('./routes/r_users')
 const r_dashboard = require('./routes/r_dashboard')
 
 app.use(
   cors({
-    origin: "http://localhost:5000", // Sesuaikan dengan URL frontend
-    allowedHeaders: ["Authorization", "Content-Type"],
+    origin: "http://localhost:5000", // Ganti dengan URL frontend Anda
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
 
-app.use('/', r_users)
-app.use('/register', r_users)
-app.use('/proses-register', r_users)
-app.use('/proses-login', r_users)
 
-app.use('/', r_dashboard)
+app.use('/api', r_users)
+
+app.use('/api', r_dashboard)
 
 app.listen(port, () => {console.log(`Server berjalan di http://localhost:${port}`)})
