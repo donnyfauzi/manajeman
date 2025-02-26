@@ -1,9 +1,10 @@
 const express = require('express')
-const { dashboard } = require('../controllers/c_dashboard')
 const verifyToken = require("../midelwares/jwtToken");
 
 const router = express.Router()
 
-router.get('/dashboard',dashboard)
+router.get("/dashboard", verifyToken, (req, res) => {
+  res.json({ message: `${req.user.name}` });
+});
 
 module.exports = router
