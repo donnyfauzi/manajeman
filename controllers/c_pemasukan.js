@@ -1,17 +1,29 @@
-const { pemasukan, pemasukanByUserId } = require('../models/m_pemasukan')
+const { pemasukan, pemasukanByUserId, totalDanaMasuk } = require('../models/m_pemasukan')
 
 const createPemasukan = async (req, res) => {
     try {
         const { tanggal, keterangan, dana_masuk } = req.body
         const id_user = req.user.id;
 
+        if (!tanggal || !keterangan || !dana_masuk) {
+            return res.status(400).json({ message: 'Semua kolom harus diisi' })
+        }
+
+        if (dana_masuk < 100000) {
+            return res.status(400).json({ message: 'Masukan nominal yang valid' })
+        }
+
+        if (keterangan.length > 20) {
+            return res.status(400).json({ message: 'Keterangan maksimal 20 karakter' })  
+        }
+
         
         const result = await pemasukan(id_user, tanggal, keterangan, dana_masuk)
         
-        res.json({ message: 'Pemasukan berhasil ditambahkan', id: result.id })
+        return res.json({ message: 'Pemasukan berhasil ditambahkan', id: result.id })
     } catch (error) {
         console.error('Error:', error)
-        res.status(500).json({ message: 'Terjadi kesalahan server' })
+        return res.status(500).json({ message: 'Terjadi kesalahan server' })
     }
 };
 
@@ -20,10 +32,20 @@ const getPemasukan = async (req, res) => {
         const id_user = req.user.id
         const results = await pemasukanByUserId(id_user)
 
-        res.json(results)
+        return res.json(results)
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        return res.status(500).json({ error: error.message })
     }
-};
+}
 
-module.exports = { createPemasukan, getPemasukan }
+const getTotalDanaMasuk = async (req, res) => {
+    try {
+        const id_user = req.user.id;
+        const total = await totalDanaMasuk(id_user)
+        return res.json({total})
+    } catch (error) {
+        return res.status(500).json({ message: "Terjadi kesalahan saat mengambil total " })
+    }
+}
+
+module.exports = { createPemasukan, getPemasukan, getTotalDanaMasuk }

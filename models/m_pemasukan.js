@@ -13,4 +13,10 @@ const pemasukanByUserId = async (id_user) => {
     return result
 }
 
-module.exports = {pemasukan, pemasukanByUserId}
+const totalDanaMasuk = async (id_user) => {
+    const query = 'SELECT SUM(dana_masuk) AS total FROM pemasukan WHERE id_user = ?'
+    const [result] = await db.promise().query(query, [id_user])
+    return result[0].total || 0
+}
+
+module.exports = {pemasukan, pemasukanByUserId, totalDanaMasuk}
