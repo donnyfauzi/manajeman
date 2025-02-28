@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 const r_users = require('./routes/r_users')
 const r_protected = require('./routes/r_protected')
 const r_pemasukan = require('./routes/r_pemasukan')
+const r_pengeluaran = require('./routes/r_pengeluaran')
 
 app.use(
   cors({
@@ -27,5 +28,6 @@ app.use(
 app.use('/api', r_users)
 app.use('/api', r_protected)
 app.use('/api', r_pemasukan)
+app.use('/api', r_pengeluaran)
 
 app.listen(port, () => {console.log(`Server berjalan di http://localhost:${port}`)})

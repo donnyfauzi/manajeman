@@ -1,15 +1,15 @@
-const { pemasukan, pemasukanByUserId, totalDanaMasuk } = require('../models/m_pemasukan')
+const { pengeluaran, pengeluaranByUserId, totalDanaKeluar } = require('../models/m_pengeluaran')
 
-const createPemasukan = async (req, res) => {
+const createPengeluaran = async (req, res) => {
     try {
-        const { tanggal, keterangan, dana_masuk } = req.body
+        const { tanggal, keterangan, dana_keluar } = req.bpdy
         const id_user = req.user.id
 
-        if (!tanggal || !keterangan || !dana_masuk) {
+        if (!tanggal || !keterangan || !dana_keluar) {
             return res.status(400).json({ message: 'Semua kolom harus diisi' })
         }
 
-        if (dana_masuk < 100000) {
+        if (dana_keluar < 100000) {
             return res.status(400).json({ message: 'Masukan nominal yang valid' })
         }
 
@@ -17,20 +17,19 @@ const createPemasukan = async (req, res) => {
             return res.status(400).json({ message: 'Keterangan maksimal 20 karakter' })  
         }
 
-        
-        const result = await pemasukan(id_user, tanggal, keterangan, dana_masuk)
-        
-        return res.json({ message: 'Pemasukan berhasil ditambahkan', id: result.id })
+        const result = await pengeluaran(id_user, tanggal, keterangan, dana_keluar)
+        return res.json({ message: 'Pengeluaran berhasil ditambahkan', id: result.id })
+
     } catch (error) {
         console.error('Error:', error)
         return res.status(500).json({ message: 'Terjadi kesalahan server' })
     }
 }
 
-const getPemasukan = async (req, res) => {
+const getPengeluaran = async (req, res) => {
     try {
         const id_user = req.user.id
-        const results = await pemasukanByUserId(id_user)
+        const results = await pengeluaranByUserId(id_user)
 
         return res.json(results)
     } catch (error) {
@@ -38,14 +37,14 @@ const getPemasukan = async (req, res) => {
     }
 }
 
-const getTotalDanaMasuk = async (req, res) => {
+const getTotalDanaKeluar = async (req, res) => {
     try {
         const id_user = req.user.id;
-        const total = await totalDanaMasuk(id_user)
+        const total = await totalDanaKeluar(id_user)
         return res.json({total})
     } catch (error) {
         return res.status(500).json({ message: "Terjadi kesalahan saat mengambil total " })
     }
 }
 
-module.exports = { createPemasukan, getPemasukan, getTotalDanaMasuk }
+module.exports = { createPengeluaran, getPengeluaran, getTotalDanaKeluar }
