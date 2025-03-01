@@ -2,7 +2,7 @@ const { pengeluaran, pengeluaranByUserId, totalDanaKeluar } = require('../models
 
 const createPengeluaran = async (req, res) => {
     try {
-        const { tanggal, keterangan, dana_keluar } = req.bpdy
+        const { tanggal, keterangan, dana_keluar } = req.body
         const id_user = req.user.id
 
         if (!tanggal || !keterangan || !dana_keluar) {

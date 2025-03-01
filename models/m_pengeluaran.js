@@ -15,7 +15,7 @@ const pengeluaranByUserId = async (id_user) => {
 
 const totalDanaKeluar = async (id_user) => {
     const query = 'SELECT SUM(dana_keluar) AS total FROM pengeluaran WHERE id_user = ?'
-    const result = await db.promise().query(query, [id_user])
+    const [result] = await db.promise().query(query, [id_user])
     return result[0].total || 0
 }
 
