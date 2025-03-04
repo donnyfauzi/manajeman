@@ -30,7 +30,17 @@ const createProfile = async (req, res) => {
 
         const foto = await uploadFile() // Tunggu hingga upload selesai
                 
-        const { nama_lengkap, about, alamat, no_tlp, email, pekerjaan} = req.body
+        const { nama_lengkap, about, alamat, no_tlp, email, pekerjaan } = req.body
+        
+        if (!nama_lengkap || !about || !alamat || !no_tlp || !email || !pekerjaan) {
+            return res.status(400).json({ message: 'Semua kolom harus diisi!' });
+        }
+
+        const userExists = await profileByUserId(nama_lengkap)
+        console.log('exixts prifile', userExists)
+        if (userExists) {
+            return res.status(400).json({ message: 'Nama profil sudah ada!' });
+        }
 
         const result = await profile(id_user, nama_lengkap, about, alamat, no_tlp, email, pekerjaan, foto)
         return res.json({ message: 'Profile berhasil ditambahkan', id: result.id })
@@ -55,6 +65,7 @@ const getProfileById = async (req, res) => {
 const updateProfileByUserId = async (req, res) => {
     try {
         const id_user = req.user.id
+        
         const profile = await profileByUserId(id_user)
         
         // Fungsi upload file
@@ -71,7 +82,7 @@ const updateProfileByUserId = async (req, res) => {
         
         const { nama_lengkap, about, alamat, no_tlp, email, pekerjaan, } = req.body
 
-        const updatedProfile = await updateProfile(nama_lengkap, about, alamat, no_tlp, email, pekerjaan, foto)
+        const updatedProfile = await updateProfile(id_user, nama_lengkap, about, alamat, no_tlp, email, pekerjaan, foto)
 
         if (updatedProfile.changedRows === 0) {
             return res.status(404).json({ message: 'Tidak ada perubahan pada profile' })
