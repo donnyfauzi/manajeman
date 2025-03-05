@@ -18,7 +18,7 @@ const upload = multer({ storage: storage }).single("foto")
 const createProfile = async (req, res) => {
     try {
         const id_user = req.user.id
-        
+        console.log("ID User:", id_user) 
         const uploadFile = () => {
             return new Promise((resolve, reject) => {
                 upload(req, res, (err) => {
@@ -36,10 +36,9 @@ const createProfile = async (req, res) => {
             return res.status(400).json({ message: 'Semua kolom harus diisi!' });
         }
 
-        const userExists = await profileByUserId(nama_lengkap)
-        console.log('exixts prifile', userExists)
+        const userExists = await profileByUserId(id_user)
         if (userExists) {
-            return res.status(400).json({ message: 'Nama profil sudah ada!' });
+            return res.status(400).json({ message: 'profil sudah ada!' });
         }
 
         const result = await profile(id_user, nama_lengkap, about, alamat, no_tlp, email, pekerjaan, foto)
@@ -65,15 +64,22 @@ const getProfileById = async (req, res) => {
 const updateProfileByUserId = async (req, res) => {
     try {
         const id_user = req.user.id
+        console.log("ID User:", req.user.id);
+
         
         const profile = await profileByUserId(id_user)
+
+        if (!profile || !profile.foto) {
+            console.log("Profile or foto not found:", profile);
+            return res.status(404).json({ message: "Profile tidak ditemukan atau foto tidak ada" });
+        }
         
         // Fungsi upload file
         const uploadFile = () => {
             return new Promise((resolve, reject) => {
                 upload(req, res, (err) => {
                     if (err) return reject(err)
-                        resolve(req.file ? req.file.filename : profile[0].foto) // Jika tidak ada file baru, gunakan foto lama
+                        resolve(req.file ? req.file.filename : profile.foto) // Jika tidak ada file baru, gunakan foto lama
                 })
             })
         }
@@ -91,6 +97,7 @@ const updateProfileByUserId = async (req, res) => {
         return res.status(200).json({ message: 'Berhasil update data profile', originalProfile: profile, updatedProfile: updatedProfile })
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Terjadi kesalahan saat update data', error })
     }
     

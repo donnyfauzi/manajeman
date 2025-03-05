@@ -10,7 +10,7 @@ const profile = async (id_user, nama_lengkap, about, alamat, no_tlp, email, peke
 const profileByUserId = async (id_user) => {
     const query = 'SELECT * FROM profile WHERE id_user = ?'
     const [result] = await db.promise().query(query, [id_user])
-    return result
+    return result[0]
 }
 
 const updateProfile = async (id_user, nama_lengkap, about, alamat, no_tlp, email, pekerjaan, foto) => {
