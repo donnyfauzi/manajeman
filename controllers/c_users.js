@@ -9,11 +9,11 @@ module.exports =
             const { name, email, password, confirmPassword } = req.body
 
             if (!name || !email || !password || !confirmPassword) {
-                return res.status(400).json({ message: 'Column cannot be empty !' });
+                return res.status(400).json({ message: 'Column cannot be empty !' })
             }
 
             if (password !== confirmPassword) {
-              return res.status(400).json({ message: 'Password do not match !' });
+              return res.status(400).json({ message: 'Password do not match !' })
             }
 
             const existUser = await findUserByEmail(email)

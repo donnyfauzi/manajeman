@@ -1,4 +1,4 @@
-const subtotal = require('../models/m_subtotal');
+const subtotal = require('../models/m_subtotal')
 
 const getSubtotal = async (req, res) => {
     try {

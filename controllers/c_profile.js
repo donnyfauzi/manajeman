@@ -64,14 +64,14 @@ const getProfileById = async (req, res) => {
 const updateProfileByUserId = async (req, res) => {
     try {
         const id_user = req.user.id
-        console.log("ID User:", req.user.id);
+        console.log("ID User:", req.user.id)
 
         
         const profile = await profileByUserId(id_user)
 
         if (!profile || !profile.foto) {
             console.log("Profile or foto not found:", profile);
-            return res.status(404).json({ message: "Profile tidak ditemukan atau foto tidak ada" });
+            return res.status(404).json({ message: "Profile tidak ditemukan atau foto tidak ada" })
         }
         
         // Fungsi upload file
