@@ -9,7 +9,7 @@ const createPengeluaran = async (req, res) => {
             return res.status(400).json({ message: 'Semua kolom harus diisi' })
         }
 
-        if (dana_keluar < 100000) {
+        if (dana_keluar < 1000) {
             return res.status(400).json({ message: 'Masukan nominal yang valid' })
         }
 
