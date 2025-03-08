@@ -2,10 +2,10 @@ const { pengeluaran, pengeluaranByUserId, totalDanaKeluar } = require('../models
 
 const createPengeluaran = async (req, res) => {
     try {
-        const { tanggal, keterangan, dana_keluar } = req.body
+        const { tanggal, kategori, keterangan, dana_keluar } = req.body
         const id_user = req.user.id
 
-        if (!tanggal || !keterangan || !dana_keluar) {
+        if (!tanggal || !kategori || !keterangan || !dana_keluar) {
             return res.status(400).json({ message: 'Semua kolom harus diisi' })
         }
 
@@ -17,7 +17,7 @@ const createPengeluaran = async (req, res) => {
             return res.status(400).json({ message: 'Keterangan maksimal 20 karakter' })  
         }
 
-        const result = await pengeluaran(id_user, tanggal, keterangan, dana_keluar)
+        const result = await pengeluaran(id_user, tanggal, kategori, keterangan, dana_keluar)
         return res.json({ message: 'Pengeluaran berhasil ditambahkan', id: result.id })
 
     } catch (error) {

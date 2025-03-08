@@ -1,10 +1,10 @@
 const db = require('../config/database')
 
-const pengeluaran = async (id_user, tanggal, keterangan, dana_keluar) => {
-    const query = 'INSERT INTO pengeluaran (id_user, tanggal, keterangan, dana_keluar) VALUES (?, ?, ?, ?)'
-    const values = [id_user, tanggal, keterangan, dana_keluar]
+const pengeluaran = async (id_user, tanggal, kategori, keterangan, dana_keluar) => {
+    const query = 'INSERT INTO pengeluaran (id_user, tanggal, kategori, keterangan, dana_keluar) VALUES (?, ?, ?, ?, ?)'
+    const values = [id_user, tanggal, kategori, keterangan, dana_keluar]
     const [result] = await db.promise().query(query, values)
-    return { id: result.insertId, id_user, keterangan, dana_keluar }
+    return { id: result.insertId, id_user, kategori, keterangan, dana_keluar }
 }
 
 const pengeluaranByUserId = async (id_user) => {
