@@ -31,7 +31,7 @@ const getPengeluaran = async (req, res) => {
         const id_user = req.user.id
         const results = await pengeluaranByUserId(id_user)
 
-        return res.json(results)
+        return res.json({message: 'success get pengeluaran', results })
     } catch (error) {
         return res.status(500).json({ error: error.message })
     }

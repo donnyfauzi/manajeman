@@ -32,7 +32,7 @@ const getPemasukan = async (req, res) => {
         const id_user = req.user.id
         const results = await pemasukanByUserId(id_user)
 
-        return res.json(results)
+        return res.json({message:'success get pemasukan', results })
     } catch (error) {
         return res.status(500).json({ error: error.message })
     }
