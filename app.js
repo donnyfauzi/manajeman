@@ -25,7 +25,7 @@ const r_profile     = require('./routes/r_profile')
 
 app.use(
   cors({
-    origin: "http://localhost:3000", //Ini URL untuk frontend
+    origin: "http://localhost:3000", 
     credentials: true,
   })
 )
